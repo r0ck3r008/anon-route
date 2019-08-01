@@ -1,12 +1,26 @@
 #ifndef NODE_H
 #define NODE_H
 
-struct node
+struct ctrlr
+{
+	char *ip;
+};
+
+struct client
 {
 	int uid;
-	char *ip;
+	struct node *ctrlr;
+};
+
+struct node
+{
 	struct node *nxt;
 	struct node *prev;
+	union
+	{
+		struct ctrlr ctrlr_node;
+		struct client client_node;
+	};
 };
 
 void add_node(struct node *, struct node *);

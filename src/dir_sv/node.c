@@ -17,12 +17,12 @@ struct node *alloc_node(char *ip, int uid)
 	struct node *new=alloc("struct node", 1);
 
 	if(ip!=NULL){
-		new->ip=alloc("char", 512);
-		sprintf(new->ip, "%s", ip);
+		new->ctrlr_node.ip=alloc("char", 512);
+		sprintf(new->ctrlr_node.ip, "%s", ip);
 	}else{
-		new->ip=NULL;
+		new->client_node.uid=uid;
+		new->client_node.ctrlr=NULL;
 	}
-	new->uid=uid;
 	new->nxt=NULL;
 	new->prev=NULL;
 
@@ -31,8 +31,8 @@ struct node *alloc_node(char *ip, int uid)
 
 void dealloc_node(struct node *curr)
 {
-	if(curr->ip!=NULL)
-		dealloc("char", 512, curr->ip);
+	if(curr->ctrlr_node.ip!=NULL)
+		dealloc("char", 512, curr->ctrlr_node.ip);
 
 	dealloc("struct node", 1, curr);
 }
@@ -63,7 +63,7 @@ struct node *find_memb(struct node *start, int uid)
 	int flag=0;
 	struct node *curr=start->nxt;
 	for(curr; curr!=NULL; curr=curr->nxt){
-		if(curr->uid==uid){
+		if(curr->client_node.uid==uid){
 			flag=1;
 			break;
 		}
