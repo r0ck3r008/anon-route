@@ -3,7 +3,7 @@
 #include<string.h>
 #include<unistd.h>
 
-#include"node.h"
+#include"h_map.h"
 
 void *alloc(char *type, int size)
 {
@@ -15,6 +15,12 @@ void *alloc(char *type, int size)
 	}else if(!strcmp(type, "struct node")){
 		ret=malloc(sizeof(struct node)*size);
 		explicit_bzero(ret, sizeof(struct node)*size);
+	}else if(!strcmp(type, "struct h_map_t")){
+		ret=malloc(sizeof(struct h_map_t)*size);
+		explicit_bzero(ret, sizeof(struct h_map_t)*size);
+	}else if(!strcmp(type, "struct h_map_t *")){
+		ret=malloc(sizeof(struct h_map_t *)*size);
+		explicit_bzero(ret, sizeof(struct h_mao_t *)*size);
 	}
 
 	if(ret==NULL){
@@ -32,6 +38,10 @@ void dealloc(char *type, int size, void *buf)
 		explicit_bzero(buf, sizeof(char)*size);
 	else if(!strcmp(type, "struct node"))
 		explicit_bzero(buf, sizeof(struct node)*size);
+	else if(!strcmp(type, "struct h_map_t"))
+		explicit_bzero(buf, sizeof(struct h_map_t)*size);
+	else if(!strcmp(type, "struct h_map_t *"))
+		explicit_bzero(buf, sizeof(struct h_map_t *)*size);
 
 	free(buf);
 }
