@@ -18,14 +18,17 @@ void *alloc(char *type, int size)
 	}else if(!strcmp(type, "struct h_map_t")){
 		ret=malloc(sizeof(struct h_map_t)*size);
 		explicit_bzero(ret, sizeof(struct h_map_t)*size);
-	}else if(!strcmp(type, "struct h_map_t *")){
-		ret=malloc(sizeof(struct h_map_t *)*size);
-		explicit_bzero(ret, sizeof(struct h_mao_t *)*size);
+	}else if(!strcmp(type, "struct band_t")){
+		ret=malloc(sizeof(struct band_t)*size);
+		explicit_bzero(ret, sizeof(struct band_t)*size);
+	}else if(!strcmp(type, "struct band_t *")){
+		ret=malloc(sizeof(struct band_t *)*size);
+		explicit_bzero(ret, sizeof(struct band_t *)*size);
 	}
 
 	if(ret==NULL){
-		fprintf(stderr, "[-]Error in allocating %d bytes for %s type\n"
-			);
+		fprintf(stderr, "[-]Error in allocating %d bytes for %s type\n",
+			size, type);
 		_exit(-1);
 	}
 
@@ -40,8 +43,10 @@ void dealloc(char *type, int size, void *buf)
 		explicit_bzero(buf, sizeof(struct node)*size);
 	else if(!strcmp(type, "struct h_map_t"))
 		explicit_bzero(buf, sizeof(struct h_map_t)*size);
-	else if(!strcmp(type, "struct h_map_t *"))
-		explicit_bzero(buf, sizeof(struct h_map_t *)*size);
+	else if(!strcmp(type, "struct band_t"))
+		explicit_bzero(buf, sizeof(struct band_t)*size);
+	else if(!strcmp(type, "struct band_t *"))
+		explicit_bzero(buf, sizeof(struct band_t *)*size);
 
 	free(buf);
 }
