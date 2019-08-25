@@ -3,6 +3,7 @@
 #include<string.h>
 #include<unistd.h>
 #include<errno.h>
+#include<signal.h>
 
 #include"mem_mgr.h"
 #include"h_map.h"
@@ -40,9 +41,23 @@ exit:
 	return sock;
 }
 
+void sig_callback(int signal)
+{
+	printf("[!]Received signal %d\n[!]Cleaning up memory now...\t", signal);
+
+	//clear memory here
+
+	printf("Done!\n");
+	close(srv_sock);
+	_exit(0);
+}
+
 void udp_workings(char *addr)
 {
-	int srv_sock=sock_create(addr);
+	if(signal(SIGINT, sig_callback)==SIG_ERR)
+		_exit(-1);
+
+	srv_sock=sock_create(addr);
 	if(srv_sock==-1)
 		_exit(-1);
 
